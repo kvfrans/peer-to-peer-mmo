@@ -312,7 +312,7 @@ function calculateMovement(keysdown)
 			roty: cube.rotation.y
 		};
 		friends[i].conn.send(data);
-		console.log(data);
+		// console.log(data);
 	}
 }
 
