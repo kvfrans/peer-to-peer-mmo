@@ -8,12 +8,13 @@ var keys = {
 var myId;
 var friends = [];
 
-// var me;
+var spacesphere;
 
 var friendids = [];
 var alreadyhave = [];
 
 var bullets = [];
+var sky,sunSphere;
 
 window.onunload=pageleave;
 
@@ -25,7 +26,7 @@ peer.on('open', function(id) {
   myId = id;
 });
 
-var serverconnection = peer.connect("god7");
+var serverconnection = peer.connect("god5");
 
 
 serverconnection.on('open', function() {
@@ -113,14 +114,6 @@ function moveBullets()
 		bullets[i].geo.translateZ(6);
 		bullets[i].timer -= 0.01;
 
-		for (var y = 0; y < friends.length; y++) {
-			console.log("bullet" + bullets[i].geo.position.x);
-			console.log("person" + friends[y].cube.position.x)
-			if ((friends[y].cube.position.x == bullets[i].geo.position.x) && (friends[y].cube.position.y == bullets[i].geo.position.y)) {
-				console.log("you died bitch");
-			}
-		}
-
 		if(bullets[i].timer < 0)
 		{
 			scene.remove(bullets[i].geo);
@@ -152,8 +145,6 @@ function shootbullet(posx, posy, posz, id, roty)
 	scene.add( acube );
 	var bullet = {timer: 1, geo: acube, id: id};
 	bullets.push(bullet);
-
-
 }
 
 
@@ -168,7 +159,7 @@ function peeridloaded()
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
-camera.position.set( 0, 200, 250 );
+camera.position.set( 0, 200, 400 );
 camera.rotation.x = -200/360;
 
 var renderer = new THREE.WebGLRenderer();
@@ -190,13 +181,13 @@ scene.fog.color.setHSL( 0.6, 0, 1 );
 hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
 hemiLight.color.setHSL( 0.6, 1, 0.6 );
 hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-hemiLight.position.set( 0, 500, 0 );
-scene.add( hemiLight );
+hemiLight.position.set( 0, 1000, -200 );
+// scene.add( hemiLight );
 
 dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
 dirLight.color.setHSL( 0.1, 1, 0.95 );
-dirLight.position.set( -1, 1.75, 1 );
-dirLight.position.multiplyScalar( 50 );
+dirLight.position.set( 0, 20, -200 );
+// dirLight.position.multiplyScalar( 50 );
 scene.add( dirLight );
 
 dirLight.castShadow = true;
@@ -204,14 +195,14 @@ dirLight.castShadow = true;
 dirLight.shadowMapWidth = 2048;
 dirLight.shadowMapHeight = 2048;
 
-var d = 50;
+var d = 500;
 
 dirLight.shadowCameraLeft = -d;
 dirLight.shadowCameraRight = d;
 dirLight.shadowCameraTop = d;
 dirLight.shadowCameraBottom = -d;
 
-dirLight.shadowCameraFar = 3500;
+dirLight.shadowCameraFar = 9500;
 dirLight.shadowBias = -0.0001;
 dirLight.shadowDarkness = 0.35;
 
@@ -223,7 +214,7 @@ groundMat.color.setHSL( 0.095, 1, 0.75 );
 var ground = new THREE.Mesh( groundGeo, groundMat );
 ground.rotation.x = -Math.PI/2;
 ground.position.y = -33;
-ground.position.z = -200;
+ground.position.z = 0;
 scene.add( ground );
 
 ground.receiveShadow = true;
@@ -240,16 +231,36 @@ var uniforms = {
 }
 uniforms.topColor.value.copy( hemiLight.color );
 
-scene.fog.color.copy( uniforms.bottomColor.value );
+// scene.fog.color.copy( uniforms.bottomColor.value );
 
-var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
-var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
+// var skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+// var skyMat = new THREE.ShaderMaterial( { vertexShader: vertexShader, fragmentShader: fragmentShader, uniforms: uniforms, side: THREE.BackSide } );
 
-var sky = new THREE.Mesh( skyGeo, skyMat );
-scene.add( sky );
+// var sky = new THREE.Mesh( skyGeo, skyMat );
+// scene.add( sky );
 
 
-renderer.setClearColor( scene.fog.color );
+
+
+var spacetex = THREE.ImageUtils.loadTexture("images/fire.jpg");
+ var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
+ var spacesphereMat = new THREE.MeshBasicMaterial();
+ spacesphereMat.map = spacetex;
+
+ spacesphere = new THREE.Mesh(spacesphereGeo,spacesphereMat);
+
+ //spacesphere needs to be double sided as the camera is within the spacesphere
+ spacesphere.material.side = THREE.DoubleSide;
+
+ spacesphere.material.map.wrapS = THREE.RepeatWrapping;
+ spacesphere.material.map.wrapT = THREE.RepeatWrapping;
+ spacesphere.material.map.repeat.set( 1, 1);
+
+ scene.add(spacesphere);
+
+
+
+// renderer.setClearColor( scene.fog.color );
 renderer.gammaInput = true;
 renderer.gammaOutput = true;
 
@@ -262,12 +273,22 @@ function render() {
 
 	calculateMovement(keys);
 	moveBullets();
+
+	spacesphere.rotation.x += 1/360;
+
 	// serverconnection.send({structure: "keys",keys: keys});
 
 	// camera.position.y += 1;
 	// cube.position.y -= 1;
 }
 render();
+
+
+
+
+
+
+
 
 
 
@@ -284,26 +305,26 @@ function calculateMovement(keysdown)
 	{
 
 
-		cube.rotation.y += 15/360;
+		cube.rotation.y += 45/360;
 	}
 	if(keysdown.left)
 	{
-		
-		cube.rotation.y -= 15/360;
+
+		cube.rotation.y -= 45/360;
 	}
 	if(keysdown.up)
 	{
-		
+
 		cube.translateZ( -3 );
 
 
 	}
 	if(keysdown.down)
 	{
-		
-		
+
+
 		cube.translateZ( 3 );
-	
+
 	}
 
 	for(var i = 0; i < friends.length; i++)
@@ -423,3 +444,23 @@ $(document).keyup(function (evt) {
         keys.down = false;
     }
 });
+
+
+
+function loadTexture( path ) {
+
+				var texture = new THREE.Texture( texture_placeholder );
+				var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+
+				var image = new Image();
+				image.onload = function () {
+
+					texture.image = this;
+					texture.needsUpdate = true;
+
+				};
+				image.src = path;
+
+				return material;
+
+			}
