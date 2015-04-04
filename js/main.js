@@ -100,7 +100,7 @@ peer.on('connection', function(conn) {
   		}
   		if(data.structure == "bullet")
   		{
-  			shootbullet(data.position,conn.peer,data.roty);
+  			shootbullet(data.posx,data.posy,data.posz,conn.peer,data.roty);
   		}
 	});
 });
@@ -110,7 +110,7 @@ function moveBullets()
 {
 	for(var i = 0; i < bullets.length; i++)
 	{
-		bullets[i].geo.translateZ(10);
+		bullets[i].geo.translateZ(6);
 		bullets[i].timer -= 0.01;
 
 		if(bullets[i].timer < 0)
