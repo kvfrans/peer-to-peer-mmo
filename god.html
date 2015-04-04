@@ -1,0 +1,37 @@
+<html>
+	<head>
+
+
+	</html>
+	</head>
+
+		<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+		<script src="jquery-1.10.2.min.js"></script>
+		<script src="js/three.min.js"></script>
+		<script>
+
+Array people = [];
+
+var peer = new Peer('god', {key: 'q6j1ayv7dyvz33di'}); 
+
+
+	peer.on('connection', function(conn) {
+
+
+  		conn.on('newJoiner', function (tempID){
+
+    		console.log(data);
+  			people[people.length] = tempID;
+  			
+  		});
+	});
+
+
+
+
+
+
+
+
+
+		</script>
