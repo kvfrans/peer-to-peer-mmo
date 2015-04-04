@@ -45,6 +45,18 @@ var peer = new Peer('god3', {key: 'q6j1ayv7dyvz33di'});
 			}
 		}
 
+		if(tempData.structure = "killed") {
+			console.log("kick the players");
+			var tempId = conn.peer;
+			for (var i = 0; i <connections.length; i++) {
+				if (tempId = connections[i]) {
+					connections.splice(i);
+				}
+			}
+		}
+
+
+
 		});
 
 
