@@ -271,21 +271,21 @@ function calculateMovement(keysdown)
 	// console.log("asdsad");
 	if(keysdown.right)
 	{
-		if (cube.position.z > 20) {
+		if (cube.position.x < 0) {
 
 		}
 		cube.rotation.y += 15/360;
 	}
 	if(keysdown.left)
 	{
-		if (cube.position.z > 20) {
+		if (cube.position.x < 0) {
 
 		}
 		cube.rotation.y -= 15/360;
 	}
 	if(keysdown.up)
 	{
-		if (cube.position.z > 20) {
+		if (cube.position.x < 0) {
 
 		}
 		else {
@@ -294,7 +294,7 @@ function calculateMovement(keysdown)
 	}
 	if(keysdown.down)
 	{
-		if(cube.position.z > 20) {
+		if (cube.position.x < 0) {
 
 		}
 		else {
