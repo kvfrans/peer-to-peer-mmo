@@ -8,6 +8,7 @@ var keys = {
 var myId;
 var friends = [];
 
+var friendids = [];
 
 var myFirebaseRef = new Firebase("https://peertopeermmo.firebaseio.com/");
 
@@ -17,10 +18,61 @@ peer.on('open', function(id) {
   console.log('My peer ID is: ' + id);
   myFirebaseRef.push({id: id});
   myId = id;
-  peeridloaded();
+
 });
 
-var serverconnection = peer.connect("god");
+var serverconnection = peer.connect("god2");
+
+
+serverconnection.on('open', function() {
+	peeridloaded();
+});
+
+serverconnection.on('data',function(data)
+{
+	// console.log(data);
+	if(data.structure == "people")
+	{
+		friendids = data.people;
+		console.log(friendids);
+		for(var i = 0; i < friendids.length; i++) {
+		  var id = friendids[i];
+
+		  if(true)
+		  {
+		  	var friend = {};
+		  	friend.id = id;
+		  	friend.conn = peer.connect(id);
+		  	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+		  	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+		  	friend.cube = new THREE.Mesh( geometry, material );
+		  	friend.cube.castShadow = true;
+		  	friend.cube.position.y = -33 + 10;
+		  	friend.cube.receiveShadow = true;
+		  	scene.add( friend.cube );
+		  	friends.push(friend);
+
+		  	friend.conn.on('open', function() {
+		  		console.log("connected to " + id);
+
+		  	  // Receive messages
+		  	  friend.conn.on('data', function(data) {
+		  	    console.log('Received', data);
+		  	  });
+
+		  	  // Send messages
+		  	  // conn.send('Hello!');
+		  	});
+		  }
+		}
+
+	}
+	if(data.structure == "keys")
+	{
+		// console.log("keys are the thing");
+		calculateFriendMovement(data.keys,data.person);
+	}
+});
 
 
 peer.on('connection', function(conn) {
@@ -30,7 +82,7 @@ peer.on('connection', function(conn) {
   	    console.log('Received ' + data + " from id " + conn.peer);
   	    for(var i = 0; i < friends.length; i++)
   	    {
-  	    	if(friends[i].id == conn.peer || conn.peer == "god")
+  	    	if(friends[i].id == conn.peer)
   	    	{
   	    		friends[i].cube.position.x = data.posx;
   	    		friends[i].cube.position.y = data.posy;
@@ -44,36 +96,39 @@ peer.on('connection', function(conn) {
 
 function peeridloaded()
 {
-	myFirebaseRef.on("child_added", function(snapshot) {
-	  var newPost = snapshot.val();
 
-	  if(newPost.id != myId)
-	  {
-	  	var friend = {};
-	  	friend.id = newPost.id;
-	  	friend.conn = peer.connect(newPost.id);
-	  	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-	  	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-	  	friend.cube = new THREE.Mesh( geometry, material );
-	  	friend.cube.castShadow = true;
-	  	friend.cube.position.y = -33 + 10;
-	  	friend.cube.receiveShadow = true;
-	  	scene.add( friend.cube );
-	  	friends.push(friend);
+	serverconnection.send({structure: "giveId"});
 
-	  	friend.conn.on('open', function() {
-	  		console.log("connected to " + newPost.id);
+	// myFirebaseRef.on("child_added", function(snapshot) {
+	//   var newPost = snapshot.val();
 
-	  	  // Receive messages
-	  	  friend.conn.on('data', function(data) {
-	  	    console.log('Received', data);
-	  	  });
+	//   if(newPost.id != myId)
+	//   {
+	//   	var friend = {};
+	//   	friend.id = newPost.id;
+	//   	friend.conn = peer.connect(newPost.id);
+	//   	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+	//   	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+	//   	friend.cube = new THREE.Mesh( geometry, material );
+	//   	friend.cube.castShadow = true;
+	//   	friend.cube.position.y = -33 + 10;
+	//   	friend.cube.receiveShadow = true;
+	//   	scene.add( friend.cube );
+	//   	friends.push(friend);
 
-	  	  // Send messages
-	  	  // conn.send('Hello!');
-	  	});
-	  }
-	});
+	//   	friend.conn.on('open', function() {
+	//   		console.log("connected to " + newPost.id);
+
+	//   	  // Receive messages
+	//   	  friend.conn.on('data', function(data) {
+	//   	    console.log('Received', data);
+	//   	  });
+
+	//   	  // Send messages
+	//   	  // conn.send('Hello!');
+	//   	});
+	//   }
+	// });
 }
 
 
@@ -97,11 +152,11 @@ document.body.appendChild( renderer.domElement );
 
 var geometry = new THREE.BoxGeometry( 20, 20, 20 );
 var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-var cube = new THREE.Mesh( geometry, material );
-cube.castShadow = true;
-cube.position.y = -33 + 10;
-cube.receiveShadow = true;
-scene.add( cube );
+// var cube = new THREE.Mesh( geometry, material );
+// cube.castShadow = true;
+// cube.position.y = -33 + 10;
+// cube.receiveShadow = true;
+// scene.add( cube );
 // cube.add(camera);
 
 scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
@@ -180,6 +235,7 @@ function render() {
 	renderer.render( scene, camera );
 
 	calculateMovement(keys);
+	// serverconnection.send({structure: "keys",keys: keys});
 
 	// camera.position.y += 1;
 	// cube.position.y -= 1;
@@ -196,6 +252,7 @@ render();
 
 function calculateMovement(keysdown)
 {
+	// console.log("asdsad");
 	if(keysdown.right)
 	{
 		cube.rotation.y += 15/360;
@@ -228,6 +285,8 @@ function calculateMovement(keysdown)
 function calculateFriendMovement(keysdown,friend)
 {
 	var friendcube;
+
+	console.log("asdsad");
 
 
 	friendcube = friendFromString(friend).cube;
