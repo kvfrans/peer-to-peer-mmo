@@ -25,7 +25,7 @@ peer.on('open', function(id) {
   myId = id;
 });
 
-var serverconnection = peer.connect("god3");
+var serverconnection = peer.connect("god5");
 
 
 serverconnection.on('open', function() {
@@ -302,19 +302,35 @@ function calculateMovement(keysdown)
 	// console.log("asdsad");
 	if(keysdown.right)
 	{
+		if (cube.position.z > 20) {
+
+		}
 		cube.rotation.y += 15/360;
 	}
 	if(keysdown.left)
 	{
+		if (cube.position.z > 20) {
+
+		}
 		cube.rotation.y -= 15/360;
 	}
 	if(keysdown.up)
 	{
+		if (cube.position.z > 20) {
+
+		}
+		else {
 		cube.translateZ( -3 );
+	}
 	}
 	if(keysdown.down)
 	{
+		if(cube.position.z > 20) {
+
+		}
+		else {
 		cube.translateZ( 3 );
+	}
 	}
 
 	for(var i = 0; i < friends.length; i++)
