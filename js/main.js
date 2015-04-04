@@ -20,6 +20,8 @@ peer.on('open', function(id) {
   peeridloaded();
 });
 
+var serverconnection = peer.connect("god");
+
 
 peer.on('connection', function(conn) {
 	console.log("recieved a conncetion");
@@ -28,7 +30,7 @@ peer.on('connection', function(conn) {
   	    console.log('Received ' + data + " from id " + conn.peer);
   	    for(var i = 0; i < friends.length; i++)
   	    {
-  	    	if(friends[i].id == conn.peer)
+  	    	if(friends[i].id == conn.peer || conn.peer == "god")
   	    	{
   	    		friends[i].cube.position.x = data.posx;
   	    		friends[i].cube.position.y = data.posy;
@@ -223,7 +225,56 @@ function calculateMovement(keysdown)
 	}
 }
 
+function calculateFriendMovement(keysdown,friend)
+{
+	var friendcube;
 
+
+	friendcube = friendFromString(friend).cube;
+
+	if(keysdown.right)
+	{
+		friendcube.rotation.y += 15/360;
+	}
+	if(keysdown.left)
+	{
+		friendcube.rotation.y -= 15/360;
+	}
+	if(keysdown.up)
+	{
+		friendcube.translateZ( -3 );
+	}
+	if(keysdown.down)
+	{
+		friendcube.translateZ( 3 );
+	}
+
+		var data = {
+			posx: friendcube.position.x,
+			posy: friendcube.position.y,
+			posz: friendcube.position.z,
+			roty: friendcube.rotation.y
+		};
+
+		for(var i = 0; i < friends.length; i++)
+		{
+			friends[i].conn.send(data);
+		}
+}
+
+
+
+
+function friendFromString(id)
+{
+	for(var i = 0; i < friends.length; i++)
+	{
+		if(friends[i].id == id)
+		{
+			return friends[i];
+		}
+	}
+}
 
 
 $(document).keydown(function (evt) {
