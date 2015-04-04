@@ -36,6 +36,7 @@ var peer = new Peer('god3', {key: 'q6j1ayv7dyvz33di'});
 			connections[tempint].send({structure: "keys", keys: tempData.keys, person: conn.peer});
 		}
 		if (tempData.structure = "leave") {
+			console.log("received");
 			var tempId = conn.peer;
 			for (var i = 0; i<connections.length; i++) {
 				if (tempId = connections[i]) {
