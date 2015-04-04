@@ -9,16 +9,16 @@ var myId;
 var friends = [];
 
 var friendids = [];
+var alreadyhave = [];
 
-var myFirebaseRef = new Firebase("https://peertopeermmo.firebaseio.com/");
+window.onunload=pageleave;
+
 
 var peer = new Peer({key: 'q6j1ayv7dyvz33di'});
 
 peer.on('open', function(id) {
   console.log('My peer ID is: ' + id);
-  myFirebaseRef.push({id: id});
   myId = id;
-
 });
 
 var serverconnection = peer.connect("god3");
@@ -38,8 +38,9 @@ serverconnection.on('data',function(data)
 		for(var i = 0; i < friendids.length; i++) {
 		  var id = friendids[i];
 
-		  if(id != myId)
+		  if(id != myId && alreadyhave.indexOf(id) == -1)
 		  {
+		  	alreadyhave.push(id);
 		  	var friend = {};
 		  	friend.id = id;
 		  	friend.conn = peer.connect(id);
@@ -79,7 +80,7 @@ peer.on('connection', function(conn) {
 	console.log("recieved a conncetion");
 	conn.on('data', function(data)
 	{
-  	    console.log('Received ' + data + " from id " + conn.peer);
+  	    // console.log('Received ' + data + " from id " + conn.peer);
   	    for(var i = 0; i < friends.length; i++)
   	    {
   	    	if(friends[i].id == conn.peer)
@@ -92,6 +93,26 @@ peer.on('connection', function(conn) {
   	    }
 	});
 });
+
+
+
+
+function pageleave() {
+	serverconnection.send({structure: "leave"});
+}
+
+
+
+function shootbullet()
+{
+	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+	friend.cube = new THREE.Mesh( geometry, material );
+	friend.cube.castShadow = true;
+	friend.cube.position.y = -33 + 10;
+	friend.cube.receiveShadow = true;
+	scene.add( friend.cube );
+}
 
 
 function peeridloaded()
