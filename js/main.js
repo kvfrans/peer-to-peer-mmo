@@ -11,6 +11,8 @@ var friends = [];
 var friendids = [];
 var alreadyhave = [];
 
+var bullets = [];
+
 window.onunload=pageleave;
 
 
@@ -103,15 +105,16 @@ function pageleave() {
 
 
 
-function shootbullet()
+function shootbullet(position)
 {
 	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
 	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
 	friend.cube = new THREE.Mesh( geometry, material );
 	friend.cube.castShadow = true;
-	friend.cube.position.y = -33 + 10;
+	friend.position = position;
 	friend.cube.receiveShadow = true;
 	scene.add( friend.cube );
+	bullets.push(friend);
 }
 
 
