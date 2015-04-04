@@ -38,7 +38,7 @@ serverconnection.on('data',function(data)
 		for(var i = 0; i < friendids.length; i++) {
 		  var id = friendids[i];
 
-		  if(true)
+		  if(id != myId)
 		  {
 		  	var friend = {};
 		  	friend.id = id;
@@ -152,11 +152,11 @@ document.body.appendChild( renderer.domElement );
 
 var geometry = new THREE.BoxGeometry( 20, 20, 20 );
 var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-// var cube = new THREE.Mesh( geometry, material );
-// cube.castShadow = true;
-// cube.position.y = -33 + 10;
-// cube.receiveShadow = true;
-// scene.add( cube );
+var cube = new THREE.Mesh( geometry, material );
+cube.castShadow = true;
+cube.position.y = -33 + 10;
+cube.receiveShadow = true;
+scene.add( cube );
 // cube.add(camera);
 
 scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
