@@ -18,6 +18,15 @@ var peer = new Peer('god', {key: 'q6j1ayv7dyvz33di'});
 	peer.on('connection', function(conn) {
 		console.log("HOLEY SHIT SOMEONE CONNECTED");
 		people[people.length] = conn.peer;
+		conn.on('data', function (tempData) {
+			console.log("hello")
+			console.log(tempData);
+		if (tempData.structure == "giveId") {
+			console.log("sent");
+			conn.send({stucture: "people", people: people});
+
+		}
+		});
 
 
   		
