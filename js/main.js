@@ -84,7 +84,7 @@ peer.on('connection', function(conn) {
 	console.log("recieved a conncetion");
 	conn.on('data', function(data)
 	{
-		if(data.structure == "pos")
+		if(data.structure == "position")
 		{
 		    // console.log('Received ' + data + " from id " + conn.peer);
 		    for(var i = 0; i < friends.length; i++)
@@ -312,6 +312,7 @@ function calculateMovement(keysdown)
 			roty: cube.rotation.y
 		};
 		friends[i].conn.send(data);
+		console.log(data);
 	}
 }
 
@@ -352,6 +353,7 @@ function calculateFriendMovement(keysdown,friend)
 		for(var i = 0; i < friends.length; i++)
 		{
 			friends[i].conn.send(data);
+			// console.log(data);
 		}
 }
 
