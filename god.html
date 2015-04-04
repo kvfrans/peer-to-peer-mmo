@@ -13,7 +13,7 @@
 var people = [];
 var connections = [];
 
-var peer = new Peer('god2', {key: 'q6j1ayv7dyvz33di'}); 
+var peer = new Peer('god3', {key: 'q6j1ayv7dyvz33di'}); 
 
 
 	peer.on('connection', function(conn) {
@@ -26,13 +26,23 @@ var peer = new Peer('god2', {key: 'q6j1ayv7dyvz33di'});
 
 		if (tempData.structure == "giveId") {
 			console.log("sent received");
-			conn.send({structure: "people", people: people});
+
+			for (var i = 0; i < connections.length; i++) {
+			connections[i].send({structure: "people", people: people});
+		}
 		}
 		if (tempData.structure == "keys") {
 			var tempint = Math.floor((Math.random() * (connections.length - 1)) + 0);
 			connections[tempint].send({structure: "keys", keys: tempData.keys, person: conn.peer});
 		}
-
+		if (tempData.structure = "leave") {
+			var tempId = conn.peer;
+			for (var i = 0; i<connections.length; i++) {
+				if (tempId = connections[i]) {
+					connections.splice(i); 
+				}
+			}
+		}
 
 		});
 

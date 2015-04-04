@@ -21,7 +21,7 @@ peer.on('open', function(id) {
 
 });
 
-var serverconnection = peer.connect("god2");
+var serverconnection = peer.connect("god3");
 
 
 serverconnection.on('open', function() {
