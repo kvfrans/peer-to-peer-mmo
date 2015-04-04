@@ -8,8 +8,12 @@ var keys = {
 var myId;
 var friends = [];
 
+// var me;
+
 var friendids = [];
 var alreadyhave = [];
+
+var bullets = [];
 
 window.onunload=pageleave;
 
@@ -100,6 +104,13 @@ function moveBullets()
 	for(var i = 0; i < bullets.length; i++)
 	{
 		bullets[i].geo.translateZ(10);
+		bullets[i].timer -= 0.01;
+
+		if(bullets[i].timer < 0)
+		{
+			scene.remove(bullets[i].geo);
+			bullets.splice(i,1);
+		}
 	}
 }
 
@@ -111,17 +122,21 @@ function pageleave() {
 
 
 
-function shootbullet()
+function shootbullet(position,id,roty)
 {
-	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-	cube = new THREE.Mesh( geometry, material );
-	cube.castShadow = true;
-	position = position;
-	cube.receiveShadow = true;
-	scene.add( cube );
-	var bullet = {timer: 1, geo: cube};
-	bullets.push(cube);
+	console.log(roty);
+	var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+	var material = new THREE.MeshPhongMaterial( { color: 0xE26A6A, specular: 0x050505 } );;
+	var acube = new THREE.Mesh( geometry, material );
+	acube.castShadow = true;
+	acube.position.x = position.x;
+	acube.position.y = position.y;
+	acube.position.z = position.z;
+	acube.rotation.y = roty;
+	acube.receiveShadow = true;
+	scene.add( acube );
+	var bullet = {timer: 1, geo: acube, id: id};
+	bullets.push(bullet);
 }
 
 
@@ -266,6 +281,7 @@ function render() {
 	renderer.render( scene, camera );
 
 	calculateMovement(keys);
+	moveBullets();
 	// serverconnection.send({structure: "keys",keys: keys});
 
 	// camera.position.y += 1;
@@ -370,6 +386,7 @@ function friendFromString(id)
 $(document).keydown(function (evt) {
     if (evt.which == 16) {
         keys.shift = true;
+        shootbullet(cube.position,myId,cube.rotation.y);
     }
     if (evt.which == 37) {
         keys.left = true;
@@ -383,6 +400,7 @@ $(document).keydown(function (evt) {
     if (evt.which == 40) {
         keys.down = true;
     }
+    // if()
 });
 
 $(document).keyup(function (evt) {
