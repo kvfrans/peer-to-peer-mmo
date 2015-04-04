@@ -1,0 +1,12 @@
+stuff i need to do for the hack thing
+
+
+> client:
+	displays the game
+		it takes positions from the server
+		also takes in commands
+	computations
+		takes command from server and computes it
+
+> server
+	> takes command from a client, gives it to other clients to process
