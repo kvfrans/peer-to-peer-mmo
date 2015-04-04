@@ -18,11 +18,16 @@ var peer = new Peer('god', {key: 'q6j1ayv7dyvz33di'});
 	peer.on('connection', function(conn) {
 
 
-  		conn.on('newJoiner', function (tempID){
+  		conn.on('data', function (tempData){
 
+  			if (tempData.moves != null) {
     		console.log(data);
   			people[people.length] = tempID;
-  			
+  		}
+  		else {
+  			console.log("Trying to make a move change");
+  		}
+
   		});
 	});
 
