@@ -11,21 +11,29 @@
 		<script>
 
 var people = [];
+var connections = [];
 
-var peer = new Peer('god', {key: 'q6j1ayv7dyvz33di'}); 
+var peer = new Peer('god2', {key: 'q6j1ayv7dyvz33di'}); 
 
 
 	peer.on('connection', function(conn) {
+		connections[connections.length] = conn;
 		console.log("HOLEY SHIT SOMEONE CONNECTED");
 		people[people.length] = conn.peer;
-		conn.on('data', function (tempData) {
-			console.log("hello")
-			console.log(tempData);
-		if (tempData.structure == "giveId") {
-			console.log("sent");
-			conn.send({stucture: "people", people: people});
 
+		conn.on('data', function (tempData) {
+			
+
+		if (tempData.structure == "giveId") {
+			console.log("sent received");
+			conn.send({structure: "people", people: people});
 		}
+		if (tempData.structure == "keys") {
+			var tempint = Math.floor((Math.random() * (connections.length - 1)) + 0);
+			connections[tempint].send({structure: "keys", keys: tempData.keys, person: conn.peer});
+		}
+
+
 		});
 
 
