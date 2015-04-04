@@ -25,7 +25,7 @@ peer.on('open', function(id) {
   myId = id;
 });
 
-var serverconnection = peer.connect("god5");
+var serverconnection = peer.connect("god7");
 
 
 serverconnection.on('open', function() {
@@ -113,6 +113,14 @@ function moveBullets()
 		bullets[i].geo.translateZ(6);
 		bullets[i].timer -= 0.01;
 
+		for (var y = 0; y < friends.length; y++) {
+			console.log("bullet" + bullets[i].geo.position.x);
+			console.log("person" + friends[y].cube.position.x)
+			if ((friends[y].cube.position.x == bullets[i].geo.position.x) && (friends[y].cube.position.y == bullets[i].geo.position.y)) {
+				console.log("you died bitch");
+			}
+		}
+
 		if(bullets[i].timer < 0)
 		{
 			scene.remove(bullets[i].geo);
@@ -144,6 +152,8 @@ function shootbullet(posx, posy, posz, id, roty)
 	scene.add( acube );
 	var bullet = {timer: 1, geo: acube, id: id};
 	bullets.push(bullet);
+
+
 }
 
 
