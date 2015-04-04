@@ -15,12 +15,17 @@ var peer = new Peer('god5', {key: 'q6j1ayv7dyvz33di'});
 
 
 	peer.on('connection', function(conn) {
-		connections[connections.length] = conn;
+
+		connections.push(conn);
+
+		console.log(conn);
+
 		console.log("HOLEY SHIT SOMEONE CONNECTED");
 		people[people.length] = conn.peer;
 
 		conn.on('data', function (tempData) {
 			
+
 
 		if (tempData.structure == "giveId") {
 			console.log("sent received");
@@ -33,7 +38,7 @@ var peer = new Peer('god5', {key: 'q6j1ayv7dyvz33di'});
 			var tempint = Math.floor((Math.random() * (connections.length - 1)) + 0);
 			connections[tempint].send({structure: "keys", keys: tempData.keys, person: conn.peer});
 		}
-		if (tempData.structure = "leave") {
+		if (tempData.structure == "leave") {
 			console.log("received");
 			var tempId = conn.peer;
 			for (var i = 0; i<connections.length; i++) {
@@ -43,11 +48,11 @@ var peer = new Peer('god5', {key: 'q6j1ayv7dyvz33di'});
 			}
 		}
 
-				if(tempData.structure = "killed") {
+				if(tempData.structure == "killed") {
 					console.log("kick the players");
 					var tempId = conn.peer;
 					for (var i = 0; i <connections.length; i++) {
-						if (tempId = connections[i]) {
+						if (tempId == connections[i]) {
 							connections.splice(i);
 						}
 					}
