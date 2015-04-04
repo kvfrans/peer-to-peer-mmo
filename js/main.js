@@ -97,6 +97,14 @@ peer.on('connection', function(conn) {
 });
 
 
+function moveBullets()
+{
+	for(var i = 0; i < bullets.length; i++)
+	{
+		bullets[i].geo.translateZ(10);
+	}
+}
+
 
 
 function pageleave() {
@@ -109,12 +117,13 @@ function shootbullet(position)
 {
 	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
 	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-	friend.cube = new THREE.Mesh( geometry, material );
-	friend.cube.castShadow = true;
-	friend.position = position;
-	friend.cube.receiveShadow = true;
-	scene.add( friend.cube );
-	bullets.push(friend);
+	cube = new THREE.Mesh( geometry, material );
+	cube.castShadow = true;
+	position = position;
+	cube.receiveShadow = true;
+	scene.add( cube );
+	var bullet = {timer: 1, geo: cube};
+	bullets.push(cube);
 }
 
 
