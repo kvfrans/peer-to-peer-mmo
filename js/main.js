@@ -158,8 +158,8 @@ function peeridloaded()
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
-camera.position.set( 0, 100, 250 );
-camera.rotation.x = -100/360;
+camera.position.set( 0, 200, 250 );
+camera.rotation.x = -200/360;
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -206,13 +206,14 @@ dirLight.shadowBias = -0.0001;
 dirLight.shadowDarkness = 0.35;
 
 
-var groundGeo = new THREE.PlaneBufferGeometry( 1000, 1000 );
+var groundGeo = new THREE.PlaneBufferGeometry( 300, 300 );
 var groundMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x050505 } );
 groundMat.color.setHSL( 0.095, 1, 0.75 );
 
 var ground = new THREE.Mesh( groundGeo, groundMat );
 ground.rotation.x = -Math.PI/2;
 ground.position.y = -33;
+ground.position.z = -200;
 scene.add( ground );
 
 ground.receiveShadow = true;
@@ -271,35 +272,28 @@ function calculateMovement(keysdown)
 	// console.log("asdsad");
 	if(keysdown.right)
 	{
-		if (cube.position.x < 0) {
 
-		}
+
 		cube.rotation.y += 15/360;
 	}
 	if(keysdown.left)
 	{
-		if (cube.position.x < 0) {
-
-		}
+		
 		cube.rotation.y -= 15/360;
 	}
 	if(keysdown.up)
 	{
-		if (cube.position.x < 0) {
-
-		}
-		else {
+		
 		cube.translateZ( -3 );
-	}
+
+
 	}
 	if(keysdown.down)
 	{
-		if (cube.position.x < 0) {
-
-		}
-		else {
+		
+		
 		cube.translateZ( 3 );
-	}
+	
 	}
 
 	for(var i = 0; i < friends.length; i++)
