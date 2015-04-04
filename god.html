@@ -10,13 +10,13 @@
 		<script src="js/three.min.js"></script>
 		<script>
 
-Array people = [];
+var people = [];
 
 var peer = new Peer('god', {key: 'q6j1ayv7dyvz33di'}); 
 
 
 	peer.on('connection', function(conn) {
-
+		console.log("HOLEY SHIT SOMEONE CONNECTED");
 
   		conn.on('data', function (tempData){
 
