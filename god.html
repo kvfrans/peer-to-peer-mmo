@@ -1,9 +1,7 @@
 <html>
 	<head>
-
-
-	</html>
 	</head>
+<<<<<<< HEAD
 
 		<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
 		<script src="jquery-1.10.2.min.js"></script>
@@ -41,34 +39,54 @@ var peer = new Peer('god5', {key: 'q6j1ayv7dyvz33di'});
 			for (var i = 0; i<connections.length; i++) {
 				if (tempId = connections[i]) {
 					connections.splice(i); 
+=======
+	<script src="http://cdn.peerjs.com/0.3/peer.js"></script>
+	<script src="jquery-1.10.2.min.js"></script>
+	<script src="js/three.min.js"></script>
+	<script>
+		var people = [];
+		var connections = [];
+		var peer = new Peer('god3', {key: 'q6j1ayv7dyvz33di'}); 
+
+		peer.on('connection', function(conn) {
+			connections[connections.length] = conn;
+			console.log("HOLEY SHIT SOMEONE CONNECTED");
+			people[people.length] = conn.peer;
+
+			conn.on('data', function (tempData) {
+				
+
+				if (tempData.structure == "giveId") {
+					console.log("sent received");
+
+					for (var i = 0; i < connections.length; i++) {
+						connections[i].send({structure: "people", people: people});
+					}
+>>>>>>> 500e904929433fac76f54c2d703d5ce72be67428
 				}
-			}
-		}
-
-		if(tempData.structure = "killed") {
-			console.log("kick the players");
-			var tempId = conn.peer;
-			for (var i = 0; i <connections.length; i++) {
-				if (tempId = connections[i]) {
-					connections.splice(i);
+				if (tempData.structure == "keys") {
+					var tempint = Math.floor((Math.random() * (connections.length - 1)) + 0);
+					connections[tempint].send({structure: "keys", keys: tempData.keys, person: conn.peer});
 				}
-			}
-		}
-
-
-
+				if (tempData.structure = "leave") {
+					console.log("received");
+					var tempId = conn.peer;
+					for (var i = 0; i<connections.length; i++) {
+						if (tempId = connections[i]) {
+							connections.splice(i); 
+						}
+					}
+				}
+				if(tempData.structure = "killed") {
+					console.log("kick the players");
+					var tempId = conn.peer;
+					for (var i = 0; i <connections.length; i++) {
+						if (tempId = connections[i]) {
+							connections.splice(i);
+						}
+					}
+				}
+			});
 		});
-
-
-  		
-	});
-
-
-
-
-
-
-
-
-
-		</script>
+	</script>
+</html>

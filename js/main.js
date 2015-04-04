@@ -84,17 +84,24 @@ peer.on('connection', function(conn) {
 	console.log("recieved a conncetion");
 	conn.on('data', function(data)
 	{
-  	    // console.log('Received ' + data + " from id " + conn.peer);
-  	    for(var i = 0; i < friends.length; i++)
-  	    {
-  	    	if(friends[i].id == conn.peer)
-  	    	{
-  	    		friends[i].cube.position.x = data.posx;
-  	    		friends[i].cube.position.y = data.posy;
-  	    		friends[i].cube.position.z = data.posz;
-  	    		friends[i].cube.rotation.y = data.roty;
-  	    	}
-  	    }
+		if(data.structure == "pos")
+		{
+		    // console.log('Received ' + data + " from id " + conn.peer);
+		    for(var i = 0; i < friends.length; i++)
+		    {
+		    	if(friends[i].id == conn.peer)
+		    	{
+		    		friends[i].cube.position.x = data.posx;
+		    		friends[i].cube.position.y = data.posy;
+		    		friends[i].cube.position.z = data.posz;
+		    		friends[i].cube.rotation.y = data.roty;
+		    	}
+		    }
+  		}
+  		if(data.structure == "bullet")
+  		{
+  			shootbullet(data.position,conn.peer,data.roty);
+  		}
 	});
 });
 
@@ -122,16 +129,16 @@ function pageleave() {
 
 
 
-function shootbullet(position,id,roty)
+function shootbullet(posx, posy, posz, id, roty)
 {
 	console.log(roty);
 	var geometry = new THREE.BoxGeometry( 10, 10, 10 );
 	var material = new THREE.MeshPhongMaterial( { color: 0xE26A6A, specular: 0x050505 } );;
 	var acube = new THREE.Mesh( geometry, material );
 	acube.castShadow = true;
-	acube.position.x = position.x;
-	acube.position.y = position.y;
-	acube.position.z = position.z;
+	acube.position.x = posx;
+	acube.position.y = posy;
+	acube.position.z = posz;
 	acube.rotation.y = roty;
 	acube.receiveShadow = true;
 	scene.add( acube );
@@ -145,46 +152,8 @@ function peeridloaded()
 
 	serverconnection.send({structure: "giveId"});
 
-	// myFirebaseRef.on("child_added", function(snapshot) {
-	//   var newPost = snapshot.val();
 
-	//   if(newPost.id != myId)
-	//   {
-	//   	var friend = {};
-	//   	friend.id = newPost.id;
-	//   	friend.conn = peer.connect(newPost.id);
-	//   	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-	//   	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-	//   	friend.cube = new THREE.Mesh( geometry, material );
-	//   	friend.cube.castShadow = true;
-	//   	friend.cube.position.y = -33 + 10;
-	//   	friend.cube.receiveShadow = true;
-	//   	scene.add( friend.cube );
-	//   	friends.push(friend);
-
-	//   	friend.conn.on('open', function() {
-	//   		console.log("connected to " + newPost.id);
-
-	//   	  // Receive messages
-	//   	  friend.conn.on('data', function(data) {
-	//   	    console.log('Received', data);
-	//   	  });
-
-	//   	  // Send messages
-	//   	  // conn.send('Hello!');
-	//   	});
-	//   }
-	// });
 }
-
-
-
-
-
-
-
-
-
 
 
 var scene = new THREE.Scene();
@@ -336,6 +305,7 @@ function calculateMovement(keysdown)
 	for(var i = 0; i < friends.length; i++)
 	{
 		var data = {
+			structure: "position",
 			posx: cube.position.x,
 			posy: cube.position.y,
 			posz: cube.position.z,
@@ -372,6 +342,7 @@ function calculateFriendMovement(keysdown,friend)
 	}
 
 		var data = {
+			structure: "position",
 			posx: friendcube.position.x,
 			posy: friendcube.position.y,
 			posz: friendcube.position.z,
@@ -402,7 +373,17 @@ function friendFromString(id)
 $(document).keydown(function (evt) {
     if (evt.which == 16) {
         keys.shift = true;
-        shootbullet(cube.position,myId,cube.rotation.y);
+        for(var i = 0; i < friends.length; i++)
+        {
+        	friends[i].conn.send({
+        		structure: "bullet",
+        		posx: cube.position.x,
+        		posy: cube.position.y,
+        		posz: cube.position.z,
+        		roty: cube.rotation.y
+        	});
+    	}
+    	shootbullet(cube.position.x,cube.position.y,cube.position.z,myId,cube.rotation.y);
     }
     if (evt.which == 37) {
         keys.left = true;
