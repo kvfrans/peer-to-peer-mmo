@@ -202,6 +202,9 @@ var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x05050
 var cube = new THREE.Mesh( geometry, material );
 cube.castShadow = true;
 cube.position.y = -33 + 10;
+cube.position.x = Math.floor((Math.random() * 150) + -100);
+cube.position.z = Math.floor((Math.random() * 150) + -100);
+
 cube.receiveShadow = true;
 scene.add( cube );
 // cube.add(camera);
