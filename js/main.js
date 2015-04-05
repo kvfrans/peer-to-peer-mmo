@@ -26,7 +26,7 @@ peer.on('open', function(id) {
   myId = id;
 });
 
-var serverconnection = peer.connect("god6");
+var serverconnection = peer.connect("god7");
 
 
 serverconnection.on('open', function() {
@@ -126,7 +126,10 @@ function moveBullets()
 				console.log("bullet" + bullets[i].geo.position.x);
 				console.log("person" + friends[y].cube.position.x)
 				if (Math.abs(friends[y].cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(friends[y].cube.position.z - bullets[i].geo.position.z) < 10) {
-					scene.remove(friends[y].cube);
+					if(friends[y].id != bullets[i].id)
+					{
+						scene.remove(friends[y].cube);
+					}
 				}
 			}
 		}
@@ -326,7 +329,7 @@ function calculateMovement(keysdown)
 	if(keysdown.up)
 	{
 
-		cube.translateZ( -1.5 );
+		cube.translateZ( 1.5 );
 
 
 	}
@@ -334,7 +337,7 @@ function calculateMovement(keysdown)
 	{
 
 
-		cube.translateZ( 1.5 );
+		cube.translateZ( -1.5 );
 
 	}
 
