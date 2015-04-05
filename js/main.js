@@ -171,7 +171,7 @@ function shootbullet(posx, posy, posz, id, roty)
 {
 	console.log(roty);
 	var geometry = new THREE.SphereGeometry(5, 25, 25);
-	var material = new THREE.MeshPhongMaterial( { color: 0x9b59b6, specular: 0x050505 } );;
+	var material = new THREE.MeshPhongMaterial( { color: 0xecf0f1, specular: 0x050505 } );;
 	var acube = new THREE.Mesh( geometry, material );
 	acube.castShadow = true;
 	acube.position.x = posx;
