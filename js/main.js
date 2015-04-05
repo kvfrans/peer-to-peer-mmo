@@ -477,7 +477,10 @@ function calculateMovement(keysdown)
 							}
 							window.location.replace("http://wowlag.com");
 						}
-
+						 wheel.rotation.x += 0.05;
+   						 wheel.rotation.y += 0.0;
+   						 wheel2.rotation.x += 0.05;
+   						 wheel2.rotation.x += 0.00;
 						cube.translateZ( 1.5 );
 
 					}
@@ -543,6 +546,10 @@ function calculateMovement(keysdown)
 						window.location.replace("http://wowlag.com");
 						}
 
+						wheel.rotation.x += -0.05;
+   						 wheel.rotation.y += 0.0;
+   						 wheel2.rotation.x += -0.05;
+   						 wheel2.rotation.x += 0.00;
 						cube.translateZ( -1.5 );
 
 					}
@@ -580,10 +587,18 @@ function calculateFriendMovement(keysdown,friend)
 	}
 	if(keysdown.up)
 	{
+		wheel.rotation.x += 0.05;
+   		wheel.rotation.y += 0.0;
+   		wheel2.rotation.x += 0.05;
+   		wheel2.rotation.x += 0.00;
 		friendcube.translateZ( -3 );
 	}
 	if(keysdown.down)
 	{
+		wheel.rotation.x += -0.05;
+   						 wheel.rotation.y += 0.0;
+   						 wheel2.rotation.x += -0.05;
+   						 wheel2.rotation.x += 0.00;
 		friendcube.translateZ( 3 );
 	}
 
