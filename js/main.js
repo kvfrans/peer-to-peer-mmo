@@ -126,7 +126,7 @@ function moveBullets()
 				console.log("bullet" + bullets[i].geo.position.x);
 				console.log("person" + friends[y].cube.position.x)
 				if (Math.abs(friends[y].cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(friends[y].cube.position.z - bullets[i].geo.position.z) < 10) {
-					console.log("you died bitch");
+					scene.remove(friends[y].cube);
 				}
 			}
 		}
