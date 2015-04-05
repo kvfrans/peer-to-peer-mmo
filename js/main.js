@@ -132,8 +132,8 @@ function moveBullets()
 		{
 
 			for (var y = 0; y < friends.length; y++) {
-				console.log("bullet" + bullets[i].geo.position.x);
-				console.log("person" + friends[y].cube.position.x)
+				// console.log("bullet" + bullets[i].geo.position.x);
+				// console.log("person" + friends[y].cube.position.x)
 				if (Math.abs(friends[y].cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(friends[y].cube.position.z - bullets[i].geo.position.z) < 10) {
 					if(friends[y].id != bullets[i].id)
 					{
@@ -216,6 +216,9 @@ var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHe
 camera.position.set( 0, 200, 400 );
 camera.rotation.x = -200/360;
 
+var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
+
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
@@ -230,6 +233,47 @@ cube.position.z = Math.floor((Math.random() * 150) + -100);
 
 cube.receiveShadow = true;
 scene.add( cube );
+
+
+var geometry2 = new THREE.CylinderGeometry( 10, 10, 8 );
+var material2 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+var wheel = new THREE.Mesh( geometry2, material2 );
+wheel.castShadow = true;
+wheel.position.y = -5;
+wheel.position.x = 10;
+wheel.position.z = 0;
+scene.add(wheel);
+cube.add(wheel);
+
+wheel.rotation.x = 1.6;
+wheel.rotation.z = 1.6;
+
+var geometry3 = new THREE.CylinderGeometry( 10, 10, 8 );
+var material3 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+var wheel2 = new THREE.Mesh( geometry3, material3 );
+wheel2.castShadow = true;
+wheel2.position.y = -5;
+wheel2.position.x = -10;
+wheel2.position.z = 0;
+scene.add(wheel2);
+cube.add(wheel2);
+
+wheel2.rotation.x = 1.6;
+wheel2.rotation.z = 1.6;
+
+var geometry4 = new THREE.CylinderGeometry( 8, 8, 20 );
+var material4 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+var cannon = new THREE.Mesh( geometry4, material4 );
+cannon.castShadow = true;
+cannon.position.y = 0;
+cannon.position.x = 0;
+cannon.position.z = 15;
+scene.add(cannon);
+cube.add(cannon);
+
+// cannon.rotation.x = 1.6;
+cannon.rotation.z = 1.6;
+cannon.rotation.y = 1.6;
 // cube.add(camera);
 
 scene.fog = new THREE.Fog( 0xffffff, 1, 5000 );
