@@ -119,6 +119,17 @@ function moveBullets()
 			scene.remove(bullets[i].geo);
 			bullets.splice(i,1);
 		}
+		else
+		{
+
+			for (var y = 0; y < friends.length; y++) {
+				console.log("bullet" + bullets[i].geo.position.x);
+				console.log("person" + friends[y].cube.position.x)
+				if (Math.abs(friends[y].cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(friends[y].cube.position.z - bullets[i].geo.position.z) < 10) {
+					console.log("you died bitch");
+				}
+			}
+		}
 	}
 }
 
@@ -242,21 +253,21 @@ uniforms.topColor.value.copy( hemiLight.color );
 
 
 
-var spacetex = THREE.ImageUtils.loadTexture("images/fire.jpg");
- var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
- var spacesphereMat = new THREE.MeshBasicMaterial();
- spacesphereMat.map = spacetex;
+// var spacetex = THREE.ImageUtils.loadTexture("images/fire.jpg");
+//  var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
+//  var spacesphereMat = new THREE.MeshBasicMaterial();
+//  spacesphereMat.map = spacetex;
 
- spacesphere = new THREE.Mesh(spacesphereGeo,spacesphereMat);
+//  spacesphere = new THREE.Mesh(spacesphereGeo,spacesphereMat);
 
- //spacesphere needs to be double sided as the camera is within the spacesphere
- spacesphere.material.side = THREE.DoubleSide;
+//  //spacesphere needs to be double sided as the camera is within the spacesphere
+//  spacesphere.material.side = THREE.DoubleSide;
 
- spacesphere.material.map.wrapS = THREE.RepeatWrapping;
- spacesphere.material.map.wrapT = THREE.RepeatWrapping;
- spacesphere.material.map.repeat.set( 1, 1);
+//  spacesphere.material.map.wrapS = THREE.RepeatWrapping;
+//  spacesphere.material.map.wrapT = THREE.RepeatWrapping;
+//  spacesphere.material.map.repeat.set( 1, 1);
 
- scene.add(spacesphere);
+//  scene.add(spacesphere);
 
 
 
@@ -274,7 +285,7 @@ function render() {
 	calculateMovement(keys);
 	moveBullets();
 
-	spacesphere.rotation.x += 1/360;
+	// spacesphere.rotation.x += 1/360;
 
 	// serverconnection.send({structure: "keys",keys: keys});
 
@@ -315,7 +326,7 @@ function calculateMovement(keysdown)
 	if(keysdown.up)
 	{
 
-		cube.translateZ( -3 );
+		cube.translateZ( -1.5 );
 
 
 	}
@@ -323,7 +334,7 @@ function calculateMovement(keysdown)
 	{
 
 
-		cube.translateZ( 3 );
+		cube.translateZ( 1.5 );
 
 	}
 
