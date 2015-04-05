@@ -13,6 +13,9 @@ var spacesphere;
 var friendids = [];
 var alreadyhave = [];
 
+var composer;
+var glitchPass;
+
 var bullets = [];
 var sky,sunSphere;
 
@@ -58,6 +61,47 @@ serverconnection.on('data',function(data)
 				friend.cube.receiveShadow = true;
 				scene.add( friend.cube );
 				friends.push(friend);
+
+
+				var ageometry2 = new THREE.CylinderGeometry( 10, 10, 8 );
+				var amaterial2 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+				var awheel = new THREE.Mesh( ageometry2, amaterial2 );
+				awheel.castShadow = true;
+				awheel.position.y = -5;
+				awheel.position.x = 10;
+				awheel.position.z = 0;
+				scene.add(awheel);
+				friend.cube.add(awheel);
+
+				awheel.rotation.x = 1.6;
+				awheel.rotation.z = 1.6;
+
+				var ageometry3 = new THREE.CylinderGeometry( 10, 10, 8 );
+				var amaterial3 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+				var awheel2 = new THREE.Mesh( ageometry3, amaterial3 );
+				awheel2.castShadow = true;
+				awheel2.position.y = -5;
+				awheel2.position.x = -10;
+				awheel2.position.z = 0;
+				scene.add(awheel2);
+				friend.cube.add(awheel2);
+
+				awheel2.rotation.x = 1.6;
+				awheel2.rotation.z = 1.6;
+
+				var ageometry4 = new THREE.CylinderGeometry( 8, 8, 20 );
+				var amaterial4 = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+				var acannon = new THREE.Mesh( ageometry4, amaterial4 );
+				acannon.castShadow = true;
+				acannon.position.y = 0;
+				acannon.position.x = 0;
+				acannon.position.z = 15;
+				scene.add(acannon);
+				friend.cube.add(acannon);
+
+				// cannon.rotation.x = 1.6;
+				acannon.rotation.z = 1.6;
+				acannon.rotation.y = 1.6;
 
 				friend.conn.on('open', function() {
 					console.log("connected to " + id);
@@ -176,6 +220,20 @@ function moveBullets()
 					}
 				}
 			}
+			if (Math.abs(cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(cube.position.z - bullets[i].geo.position.z) < 10) {
+				if(myId != bullets[i].id)
+					{
+						glitchPass.goWild = true;
+					}
+					else
+					{
+						glitchPass.goWild = false;
+					}
+			}
+			else
+			{
+				glitchPass.goWild = false;
+			}
 		}
 	}
 }
@@ -237,6 +295,28 @@ cube.position.z = Math.floor((Math.random() * 150) + -100);
 
 cube.receiveShadow = true;
 scene.add( cube );
+
+
+var colors = [ 0x000000, 0xff0080, 0x8000ff, 0xffffff ];
+var geometry = new THREE.Geometry();
+
+for ( var i = 0; i < 2000; i ++ ) {
+
+	var vertex = new THREE.Vector3();
+	vertex.x = 0;
+	vertex.y = 0;
+	vertex.z = 0;
+	geometry.vertices.push( vertex );
+
+	geometry.colors.push( new THREE.Color( colors[ Math.floor( Math.random() * colors.length ) ] ) );
+
+}
+
+var material = new THREE.PointCloudMaterial( { size: 1, vertexColors: THREE. VertexColors, depthTest: false, opacity: 0.5, sizeAttenuation: false, transparent: true } );
+
+var mesh = new THREE.PointCloud( geometry, material );
+scene.add( mesh );
+cube.add(mesh);
 
 
 var geometry2 = new THREE.CylinderGeometry( 10, 10, 8 );
@@ -363,7 +443,12 @@ uniforms.topColor.value.copy( hemiLight.color );
 
 //  scene.add(spacesphere);
 
+composer = new THREE.EffectComposer( renderer );
+				composer.addPass( new THREE.RenderPass( scene, camera ) );
 
+				glitchPass = new THREE.GlitchPass();
+				glitchPass.renderToScreen = true;
+				composer.addPass( glitchPass );
 
 // renderer.setClearColor( scene.fog.color );
 renderer.gammaInput = true;
@@ -374,7 +459,8 @@ renderer.shadowMapCullFace = THREE.CullFaceBack;
 
 function render() {
 	requestAnimationFrame( render );
-	renderer.render( scene, camera );
+	// renderer.render( scene, camera );
+	composer.render();
 
 	calculateMovement(keys);
 	moveBullets();
@@ -385,6 +471,10 @@ function render() {
 
 	// camera.position.y += 1;
 	// cube.position.y -= 1;
+
+	// particleSystem.rotation.y += 0.01;
+
+
 }
 render();
 
