@@ -153,7 +153,7 @@ peer.on('connection', function(conn) {
   			// scene.remove()
   			if(data.player == myId)
   			{
-  				window.location.replace("http://wowlag.com");
+  				window.location.replace("/gameover.html");
   			}
   			else
   			{
@@ -162,7 +162,6 @@ peer.on('connection', function(conn) {
   		}
   	});
 });
-
 
 function moveBullets()
 {
@@ -250,13 +249,9 @@ function moveBullets()
 	}
 }
 
-
-
 function pageleave() {
 	serverconnection.send({structure: "leave"});
 }
-
-
 
 function shootbullet(posx, posy, posz, id, roty)
 {
@@ -275,15 +270,10 @@ function shootbullet(posx, posy, posz, id, roty)
 	bullets.push(bullet);
 }
 
-
 function peeridloaded()
 {
-
 	serverconnection.send({structure: "giveId"});
-
-
 }
-
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
@@ -313,7 +303,6 @@ var colors = [ 0x000000, 0xff0080, 0x8000ff, 0xffffff ];
 var geometry = new THREE.Geometry();
 
 for ( var i = 0; i < 2000; i ++ ) {
-
 	var vertex = new THREE.Vector3();
 	vertex.x = 0;
 	vertex.y = 0;
@@ -321,7 +310,6 @@ for ( var i = 0; i < 2000; i ++ ) {
 	geometry.vertices.push( vertex );
 
 	geometry.colors.push( new THREE.Color( colors[ Math.floor( Math.random() * colors.length ) ] ) );
-
 }
 
 var material = new THREE.PointCloudMaterial( { size: 1, vertexColors: THREE. VertexColors, depthTest: false, opacity: 0.5, sizeAttenuation: false, transparent: true } );
@@ -436,9 +424,6 @@ uniforms.topColor.value.copy( hemiLight.color );
 // var sky = new THREE.Mesh( skyGeo, skyMat );
 // scene.add( sky );
 
-
-
-
 // var spacetex = THREE.ImageUtils.loadTexture("images/fire.jpg");
 //  var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
 //  var spacesphereMat = new THREE.MeshBasicMaterial();
@@ -485,25 +470,8 @@ function render() {
 	// cube.position.y -= 1;
 
 	// particleSystem.rotation.y += 0.01;
-
-
 }
 render();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function calculateMovement(keysdown)
 {
@@ -533,7 +501,7 @@ function calculateMovement(keysdown)
 				friends[i].conn.send(data);
 									// console.log(data);
 								}
-							window.location.replace("http://wowlag.com");
+							window.location.replace("/gameover.html");
 							}
 							if (cube.position.x > 149) {
 								console.log("you are dead");
@@ -547,7 +515,7 @@ function calculateMovement(keysdown)
 									friends[i].conn.send(data);
 								// console.log(data);
 							}
-						window.location.replace("http://wowlag.com");
+						window.location.replace("/gameover.html");
 						}
 						if (cube.position.z < -148) {
 							console.log("you are dead");
@@ -561,7 +529,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-					window.location.replace("http://wowlag.com");
+					window.location.replace("/gameover.html");
 						}
 
 
@@ -577,7 +545,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							window.location.replace("http://wowlag.com");
+							window.location.replace("/gameover.html");
 						}
 						 wheel.rotation.x += 0.05;
    						 wheel.rotation.y += 0.0;
@@ -602,7 +570,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							window.location.replace("http://wowlag.com");
+							window.location.replace("/gameover.html");
 						}
 						if (cube.position.z > 149) {
 							console.log("you are dead");
@@ -616,7 +584,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							window.location.replace("http://wowlag.com");
+							window.location.replace("/gameover.html");
 						}
 						if (cube.position.z < -148) {
 							console.log("you are dead");
@@ -630,7 +598,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							window.location.replace("http://wowlag.com");
+							window.location.replace("/gameover.html");
 						}
 
 						if (cube.position.z > 148) {
@@ -645,7 +613,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-						window.location.replace("http://wowlag.com");
+						window.location.replace("/gameover.html");
 						}
 
 						wheel.rotation.x += -0.05;
@@ -719,9 +687,6 @@ function calculateFriendMovement(keysdown,friend)
 		}
 	}
 
-
-
-
 	function friendFromString(id)
 	{
 		for(var i = 0; i < friends.length; i++)
@@ -732,7 +697,6 @@ function calculateFriendMovement(keysdown,friend)
 			}
 		}
 	}
-
 
 	$(document).keydown(function (evt) {
 		if (evt.which == 16) {
@@ -782,8 +746,6 @@ function calculateFriendMovement(keysdown,friend)
 		}
 	});
 
-
-
 	function loadTexture( path ) {
 
 		var texture = new THREE.Texture( texture_placeholder );
@@ -799,5 +761,4 @@ function calculateFriendMovement(keysdown,friend)
 		image.src = path;
 
 		return material;
-
 	}
