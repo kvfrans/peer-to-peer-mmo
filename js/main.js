@@ -431,7 +431,7 @@ function calculateMovement(keysdown)
 				friends[i].conn.send(data);
 									// console.log(data);
 								}
-						//		window.location.replace("http://wowlag.com");
+							window.location.replace("http://wowlag.com");
 							}
 							if (cube.position.x > 149) {
 								console.log("you are dead");
@@ -445,7 +445,7 @@ function calculateMovement(keysdown)
 									friends[i].conn.send(data);
 								// console.log(data);
 							}
-				//			window.location.replace("http://wowlag.com");
+						window.location.replace("http://wowlag.com");
 						}
 						if (cube.position.z < -148) {
 							console.log("you are dead");
@@ -459,7 +459,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-					//		window.location.replace("http://wowlag.com");
+					window.location.replace("http://wowlag.com");
 						}
 
 
@@ -475,7 +475,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-						//	window.location.replace("http://wowlag.com");
+							window.location.replace("http://wowlag.com");
 						}
 
 						cube.translateZ( 1.5 );
@@ -497,7 +497,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							//window.location.replace("http://wowlag.com");
+							window.location.replace("http://wowlag.com");
 						}
 						if (cube.position.z > 149) {
 							console.log("you are dead");
@@ -511,7 +511,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-							//window.location.replace("http://wowlag.com");
+							window.location.replace("http://wowlag.com");
 						}
 						if (cube.position.z < -148) {
 							console.log("you are dead");
@@ -525,7 +525,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-						//	window.location.replace("http://wowlag.com");
+							window.location.replace("http://wowlag.com");
 						}
 
 						if (cube.position.z > 148) {
@@ -540,7 +540,7 @@ function calculateMovement(keysdown)
 								friends[i].conn.send(data);
 								// console.log(data);
 							}
-					//		window.location.replace("http://wowlag.com");
+						window.location.replace("http://wowlag.com");
 						}
 
 						cube.translateZ( -1.5 );
