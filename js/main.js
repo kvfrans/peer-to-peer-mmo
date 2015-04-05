@@ -22,8 +22,8 @@ window.onunload=pageleave;
 var peer = new Peer({key: 'q6j1ayv7dyvz33di'});
 
 peer.on('open', function(id) {
-  console.log('My peer ID is: ' + id);
-  myId = id;
+	console.log('My peer ID is: ' + id);
+	myId = id;
 });
 
 var serverconnection = peer.connect("god7");
@@ -41,36 +41,36 @@ serverconnection.on('data',function(data)
 		friendids = data.people;
 		console.log(friendids);
 		for(var i = 0; i < friendids.length; i++) {
-		  var id = friendids[i];
+			var id = friendids[i];
 
-		  if(id != myId && alreadyhave.indexOf(id) == -1)
-		  {
-		  	alreadyhave.push(id);
-		  	var friend = {};
-		  	friend.id = id;
-		  	friend.health = 5;
-		  	friend.conn = peer.connect(id);
-		  	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
-		  	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
-		  	friend.cube = new THREE.Mesh( geometry, material );
-		  	friend.cube.castShadow = true;
-		  	friend.cube.position.y = -33 + 10;
-		  	friend.cube.receiveShadow = true;
-		  	scene.add( friend.cube );
-		  	friends.push(friend);
+			if(id != myId && alreadyhave.indexOf(id) == -1)
+			{
+				alreadyhave.push(id);
+				var friend = {};
+				friend.id = id;
+				friend.health = 5;
+				friend.conn = peer.connect(id);
+				var geometry = new THREE.BoxGeometry( 20, 20, 20 );
+				var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
+				friend.cube = new THREE.Mesh( geometry, material );
+				friend.cube.castShadow = true;
+				friend.cube.position.y = -33 + 10;
+				friend.cube.receiveShadow = true;
+				scene.add( friend.cube );
+				friends.push(friend);
 
-		  	friend.conn.on('open', function() {
-		  		console.log("connected to " + id);
+				friend.conn.on('open', function() {
+					console.log("connected to " + id);
 
 		  	  // Receive messages
 		  	  friend.conn.on('data', function(data) {
-		  	    console.log('Received', data);
+		  	  	console.log('Received', data);
 		  	  });
 
 		  	  // Send messages
 		  	  // conn.send('Hello!');
 		  	});
-		  }
+			}
 		}
 
 	}
@@ -99,20 +99,20 @@ peer.on('connection', function(conn) {
 		    		friends[i].cube.rotation.y = data.roty;
 		    	}
 		    }
-  		}
-  		if(data.structure == "bullet")
-  		{
-  			shootbullet(data.posx,data.posy,data.posz,conn.peer,data.roty);
-  		}
-  		if(data.structure == "dead")
-  		{
+		}
+		if(data.structure == "bullet")
+		{
+			shootbullet(data.posx,data.posy,data.posz,conn.peer,data.roty);
+		}
+		if(data.structure == "dead")
+		{
   			// scene.remove()
   			if(data.player == myId)
   			{
   				window.location.replace("http://wowlag.com");
   			}
   		}
-	});
+  	});
 });
 
 
@@ -361,7 +361,6 @@ function calculateMovement(keysdown)
 	if(keysdown.right)
 	{
 
-
 		cube.rotation.y += 20/360;
 	}
 	if(keysdown.left)
@@ -372,28 +371,144 @@ function calculateMovement(keysdown)
 	if(keysdown.up)
 	{
 
-		cube.translateZ( 1.5 );
+		if (cube.position.x < -149) {
+			console.log("you are dead");
+			scene.remove(cube);
+			for(var i = 0; i < friends.length; i++)
+			{
+				var data = {
+					structure: "dead",
+					player: myId
+				};
+				friends[i].conn.send(data);
+									// console.log(data);
+								}
+						//		window.location.replace("http://wowlag.com");
+							}
+							if (cube.position.x > 149) {
+								console.log("you are dead");
+								scene.remove(cube);
+								for(var i = 0; i < friends.length; i++)
+								{
+									var data = {
+										structure: "dead",
+										player: myId
+									};
+									friends[i].conn.send(data);
+								// console.log(data);
+							}
+				//			window.location.replace("http://wowlag.com");
+						}
+						if (cube.position.z < -148) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+					//		window.location.replace("http://wowlag.com");
+						}
 
 
-	}
-	if(keysdown.down)
-	{
+						if (cube.position.z > 148) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+						//	window.location.replace("http://wowlag.com");
+						}
+
+						cube.translateZ( 1.5 );
+
+					}
 
 
-		cube.translateZ( -1.5 );
+					if(keysdown.down)
+					{
+						if (cube.position.z < -149) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+							//window.location.replace("http://wowlag.com");
+						}
+						if (cube.position.z > 149) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+							//window.location.replace("http://wowlag.com");
+						}
+						if (cube.position.z < -148) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+						//	window.location.replace("http://wowlag.com");
+						}
 
-	}
+						if (cube.position.z > 148) {
+							console.log("you are dead");
+							scene.remove(cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: myId
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
+					//		window.location.replace("http://wowlag.com");
+						}
 
-	for(var i = 0; i < friends.length; i++)
-	{
-		var data = {
-			structure: "position",
-			posx: cube.position.x,
-			posy: cube.position.y,
-			posz: cube.position.z,
-			roty: cube.rotation.y
-		};
-		friends[i].conn.send(data);
+						cube.translateZ( -1.5 );
+
+					}
+
+					for(var i = 0; i < friends.length; i++)
+					{
+						var data = {
+							structure: "position",
+							posx: cube.position.x,
+							posy: cube.position.y,
+							posz: cube.position.z,
+							roty: cube.rotation.y
+						};
+						friends[i].conn.send(data);
 		// console.log(data);
 	}
 }
@@ -424,100 +539,100 @@ function calculateFriendMovement(keysdown,friend)
 		friendcube.translateZ( 3 );
 	}
 
-		var data = {
-			structure: "position",
-			posx: friendcube.position.x,
-			posy: friendcube.position.y,
-			posz: friendcube.position.z,
-			roty: friendcube.rotation.y
-		};
+	var data = {
+		structure: "position",
+		posx: friendcube.position.x,
+		posy: friendcube.position.y,
+		posz: friendcube.position.z,
+		roty: friendcube.rotation.y
+	};
 
-		for(var i = 0; i < friends.length; i++)
-		{
-			friends[i].conn.send(data);
-			// console.log(data);
-		}
-}
-
-
-
-
-function friendFromString(id)
-{
 	for(var i = 0; i < friends.length; i++)
 	{
-		if(friends[i].id == id)
-		{
-			return friends[i];
+		friends[i].conn.send(data);
+			// console.log(data);
 		}
 	}
-}
 
 
-$(document).keydown(function (evt) {
-    if (evt.which == 16) {
-        keys.shift = true;
-        for(var i = 0; i < friends.length; i++)
-        {
-        	friends[i].conn.send({
-        		structure: "bullet",
-        		posx: cube.position.x,
-        		posy: cube.position.y,
-        		posz: cube.position.z,
-        		roty: cube.rotation.y
-        	});
-    	}
-    	shootbullet(cube.position.x,cube.position.y,cube.position.z,myId,cube.rotation.y);
-    }
-    if (evt.which == 37) {
-        keys.left = true;
-    }
-    if (evt.which == 38) {
-        keys.up = true;
-    }
-    if (evt.which == 39) {
-        keys.right = true;
-    }
-    if (evt.which == 40) {
-        keys.down = true;
-    }
+
+
+	function friendFromString(id)
+	{
+		for(var i = 0; i < friends.length; i++)
+		{
+			if(friends[i].id == id)
+			{
+				return friends[i];
+			}
+		}
+	}
+
+
+	$(document).keydown(function (evt) {
+		if (evt.which == 16) {
+			keys.shift = true;
+			for(var i = 0; i < friends.length; i++)
+			{
+				friends[i].conn.send({
+					structure: "bullet",
+					posx: cube.position.x,
+					posy: cube.position.y,
+					posz: cube.position.z,
+					roty: cube.rotation.y
+				});
+			}
+			shootbullet(cube.position.x,cube.position.y,cube.position.z,myId,cube.rotation.y);
+		}
+		if (evt.which == 37) {
+			keys.left = true;
+		}
+		if (evt.which == 38) {
+			keys.up = true;
+		}
+		if (evt.which == 39) {
+			keys.right = true;
+		}
+		if (evt.which == 40) {
+			keys.down = true;
+		}
     // if()
 });
 
-$(document).keyup(function (evt) {
-    if (evt.which == 16) {
-        keys.shift = false;
-    }
-    if (evt.which == 37) {
-        keys.left = false;
-    }
-    if (evt.which == 38) {
-        keys.up = false;
-    }
-    if (evt.which == 39) {
-        keys.right = false;
-    }
-    if (evt.which == 40) {
-        keys.down = false;
-    }
-});
+	$(document).keyup(function (evt) {
+		if (evt.which == 16) {
+			keys.shift = false;
+		}
+		if (evt.which == 37) {
+			keys.left = false;
+		}
+		if (evt.which == 38) {
+			keys.up = false;
+		}
+		if (evt.which == 39) {
+			keys.right = false;
+		}
+		if (evt.which == 40) {
+			keys.down = false;
+		}
+	});
 
 
 
-function loadTexture( path ) {
+	function loadTexture( path ) {
 
-				var texture = new THREE.Texture( texture_placeholder );
-				var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+		var texture = new THREE.Texture( texture_placeholder );
+		var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
 
-				var image = new Image();
-				image.onload = function () {
+		var image = new Image();
+		image.onload = function () {
 
-					texture.image = this;
-					texture.needsUpdate = true;
+			texture.image = this;
+			texture.needsUpdate = true;
 
-				};
-				image.src = path;
+		};
+		image.src = path;
 
-				return material;
+		return material;
 
-			}
+	}
