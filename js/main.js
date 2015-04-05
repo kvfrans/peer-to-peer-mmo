@@ -26,7 +26,7 @@ peer.on('open', function(id) {
   myId = id;
 });
 
-var serverconnection = peer.connect("god5");
+var serverconnection = peer.connect("god6");
 
 
 serverconnection.on('open', function() {
@@ -305,12 +305,12 @@ function calculateMovement(keysdown)
 	{
 
 
-		cube.rotation.y += 45/360;
+		cube.rotation.y += 20/360;
 	}
 	if(keysdown.left)
 	{
 
-		cube.rotation.y -= 45/360;
+		cube.rotation.y -= 20/360;
 	}
 	if(keysdown.up)
 	{
