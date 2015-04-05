@@ -48,6 +48,7 @@ serverconnection.on('data',function(data)
 		  	alreadyhave.push(id);
 		  	var friend = {};
 		  	friend.id = id;
+		  	friend.health = 5;
 		  	friend.conn = peer.connect(id);
 		  	var geometry = new THREE.BoxGeometry( 20, 20, 20 );
 		  	var material = new THREE.MeshPhongMaterial( { color: 0x00ff00, specular: 0x050505 } );;
@@ -136,15 +137,20 @@ function moveBullets()
 				if (Math.abs(friends[y].cube.position.x - bullets[i].geo.position.x) < 10 && Math.abs(friends[y].cube.position.z - bullets[i].geo.position.z) < 10) {
 					if(friends[y].id != bullets[i].id)
 					{
-						scene.remove(friends[y].cube);
-						for(var i = 0; i < friends.length; i++)
+						friends[y].health--;
+
+						if(friends[y].health <= 0)
 						{
-							var data = {
-								structure: "dead",
-								player: friends[y].id
-							};
-							friends[i].conn.send(data);
-							// console.log(data);
+							scene.remove(friends[y].cube);
+							for(var i = 0; i < friends.length; i++)
+							{
+								var data = {
+									structure: "dead",
+									player: friends[y].id
+								};
+								friends[i].conn.send(data);
+								// console.log(data);
+							}
 						}
 					}
 				}
