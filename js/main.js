@@ -139,6 +139,23 @@ function moveBullets()
 					{
 						friends[y].health--;
 
+						if(friends[y].health == 4)
+						{
+							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0x3498db, specular: 0x050505 } );
+						}
+						if(friends[y].health == 3)
+						{
+							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xf1c40f, specular: 0x050505 } );
+						}
+						if(friends[y].health == 2)
+						{
+							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xe67e22, specular: 0x050505 } );
+						}
+						if(friends[y].health == 1)
+						{
+							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xe74c3c, specular: 0x050505 } );
+						}
+
 						if(friends[y].health <= 0)
 						{
 							scene.remove(friends[y].cube);
