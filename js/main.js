@@ -103,6 +103,14 @@ peer.on('connection', function(conn) {
   		{
   			shootbullet(data.posx,data.posy,data.posz,conn.peer,data.roty);
   		}
+  		if(data.structure == "dead")
+  		{
+  			// scene.remove()
+  			if(data.player == myId)
+  			{
+  				window.location.replace("http://wowlag.com");
+  			}
+  		}
 	});
 });
 
@@ -129,6 +137,15 @@ function moveBullets()
 					if(friends[y].id != bullets[i].id)
 					{
 						scene.remove(friends[y].cube);
+						for(var i = 0; i < friends.length; i++)
+						{
+							var data = {
+								structure: "dead",
+								player: friends[y].id
+							};
+							friends[i].conn.send(data);
+							// console.log(data);
+						}
 					}
 				}
 			}
