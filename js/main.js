@@ -29,7 +29,7 @@ peer.on('open', function(id) {
 	myId = id;
 });
 
-var serverconnection = peer.connect("god7");
+var serverconnection = peer.connect("god12");
 
 
 serverconnection.on('open', function() {
@@ -190,18 +190,30 @@ function moveBullets()
 						if(friends[y].health == 4)
 						{
 							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0x3498db, specular: 0x050505 } );
+							for (var j = 0; j < friends[y].cube.children.length; j++) {
+								friends[y].cube.children[j].material = new THREE.MeshPhongMaterial( { color: 0x3498db, specular: 0x050505 } );
+							}
 						}
 						if(friends[y].health == 3)
 						{
 							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xf1c40f, specular: 0x050505 } );
+							for (var j = 0; j < friends[y].cube.children.length; j++) {
+								friends[y].cube.children[j].material = new THREE.MeshPhongMaterial( { color: 0xf1c40f, specular: 0x050505 } );
+							}
 						}
 						if(friends[y].health == 2)
 						{
 							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xe67e22, specular: 0x050505 } );
+							for (var j = 0; j < friends[y].cube.children.length; j++) {
+								friends[y].cube.children[j].material = new THREE.MeshPhongMaterial( { color: 0xe67e22, specular: 0x050505 } );
+							}
 						}
 						if(friends[y].health == 1)
 						{
 							friends[y].cube.material = new THREE.MeshPhongMaterial( { color: 0xe74c3c, specular: 0x050505 } );
+							for (var j = 0; j < friends[y].cube.children.length; j++) {
+								friends[y].cube.children[j].material = new THREE.MeshPhongMaterial( { color: 0xe74c3c, specular: 0x050505 } );
+							}
 						}
 
 						if(friends[y].health <= 0)

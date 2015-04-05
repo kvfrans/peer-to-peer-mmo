@@ -11,7 +11,7 @@
 var people = [];
 var connections = [];
 
-var peer = new Peer('god7', {key: 'q6j1ayv7dyvz33di'});
+var peer = new Peer('god12', {key: 'q6j1ayv7dyvz33di'});
 
 
 	peer.on('connection', function(conn) {
@@ -20,7 +20,7 @@ var peer = new Peer('god7', {key: 'q6j1ayv7dyvz33di'});
 
 		console.log(conn);
 
-		console.log("HOLEY SHIT SOMEONE CONNECTED");
+		console.log("HOLY SHIT SOMEONE CONNECTED");
 		people[people.length] = conn.peer;
 
 		conn.on('data', function (tempData) {
