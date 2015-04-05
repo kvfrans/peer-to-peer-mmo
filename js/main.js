@@ -111,6 +111,10 @@ peer.on('connection', function(conn) {
   			{
   				window.location.replace("http://wowlag.com");
   			}
+  			else
+  			{
+  				scene.remove(friendFromString(data.player).cube);
+  			}
   		}
   	});
 });
