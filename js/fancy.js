@@ -424,21 +424,23 @@ uniforms.topColor.value.copy( hemiLight.color );
 // var sky = new THREE.Mesh( skyGeo, skyMat );
 // scene.add( sky );
 
-// var spacetex = THREE.ImageUtils.loadTexture("images/fire.jpg");
-//  var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
-//  var spacesphereMat = new THREE.MeshBasicMaterial();
-//  spacesphereMat.map = spacetex;
+var spacetex = THREE.ImageUtils.loadTexture("images/firesmall.jpg");
+spacetex.filter = THREE.NearestFilter;
+ var spacesphereGeo = new THREE.SphereGeometry(600,600,600);
+ var spacesphereMat = new THREE.MeshBasicMaterial();
+ spacesphereMat.map = spacetex;
 
-//  spacesphere = new THREE.Mesh(spacesphereGeo,spacesphereMat);
+ spacesphere = new THREE.Mesh(spacesphereGeo,spacesphereMat);
 
-//  //spacesphere needs to be double sided as the camera is within the spacesphere
-//  spacesphere.material.side = THREE.DoubleSide;
+ //spacesphere needs to be double sided as the camera is within the spacesphere
+ spacesphere.material.side = THREE.DoubleSide;
 
-//  spacesphere.material.map.wrapS = THREE.RepeatWrapping;
-//  spacesphere.material.map.wrapT = THREE.RepeatWrapping;
-//  spacesphere.material.map.repeat.set( 1, 1);
+ spacesphere.material.map.wrapS = THREE.ClampToEdgeWrapping;
+ spacesphere.material.map.minFilter = THREE.NearestFilter;
+ spacesphere.material.map.wrapT = THREE.ClampToEdgeWrapping;
+ // spacesphere.material.map.repeat.set( 1, 1);
 
-//  scene.add(spacesphere);
+ scene.add(spacesphere);
 
 composer = new THREE.EffectComposer( renderer );
 				composer.addPass( new THREE.RenderPass( scene, camera ) );
@@ -462,7 +464,9 @@ function render() {
 	calculateMovement(keys);
 	moveBullets();
 
-	// spacesphere.rotation.x += 1/360;
+	spacesphere.rotation.x += 1/360;
+	spacesphere.rotation.y += 2/360;
+	spacesphere.rotation.z += 3/360;
 
 	// serverconnection.send({structure: "keys",keys: keys});
 
@@ -649,11 +653,11 @@ function calculateFriendMovement(keysdown,friend)
 
 	if(keysdown.right)
 	{
-		friendcube.rotation.y += 15/360;
+		friendcube.rotation.y -= 15/360;
 	}
 	if(keysdown.left)
 	{
-		friendcube.rotation.y -= 15/360;
+		friendcube.rotation.y += 15/360;
 	}
 	if(keysdown.up)
 	{
